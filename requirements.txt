@@ -1,0 +1,6 @@
+flask
+sqlalchemy
+dotenv
+flask-login
+flask-wtf
+sqlalchemy-serializer
