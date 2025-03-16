@@ -15,15 +15,15 @@ from backend.routers.users import index
 app = Flask(__name__)
 
 
-def count_price(stations_list):
+def count_price():
     d = {}
-    prices = get_stations()['price']
+    stations_list = get_stations()
     for i in stations_list:
         if d[i[2]] not in d:
-            d[i[2]] = 1
+            d[i[2]] = i[3]
         else:
-            d[i[2]] += 1
-    return d[0] * prices[0], d[1] * prices[1]
+            d[i[2]] += i[3]
+    return d[0], d[1], d[0] + d[1]
 
 
 @app.route('/', methods=['GET', 'POST'])
