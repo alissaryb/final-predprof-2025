@@ -5,7 +5,7 @@ body {
     background-repeat: no-repeat; /*повторение фона*/
     background-attachment: fixed; /*фон фиксирован*/
     padding-top: 70px; /*отступ сверху для header*/
-    background: var(--dark-bg);
+    background: rgb(3, 11, 40);
     color: var(--text-light);
     min-height: 100vh;
     display: flex;

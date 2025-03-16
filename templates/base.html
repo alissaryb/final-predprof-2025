@@ -63,45 +63,26 @@
 
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Списочек
+                    Карты
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
-                    <li><a class="dropdown-item" href="/cards">Карточки</a></li>
-                    <li><a class="dropdown-item" href="/tablo">Табло</a></li>
-                    <li><a class="dropdown-item" href="#">2.3</a></li>
+                    <li><a class="dropdown-item" href="/cards">Модули</a></li>
+                    <li><a class="dropdown-item" href="/tablo">Станции</a></li>
+                    <li><a class="dropdown-item" href="/">Станции и покрытия</a></li>
                 </ul>
             </li>
-
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Графики
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown3">
-                    <li><a class="dropdown-item" href="/graph_linear">Линейный</a></li>
-                    <li><a class="dropdown-item" href="/graph_circular">Круговой</a></li>
-                    <li><a class="dropdown-item" href="/">2.3</a></li>
-                </ul>
-            </li>
-
-
         </ul>
-        {% if 1 %}
-            <div class="text-end d-none d-lg-block py-2">
-                <a href="/login" class="btn btn-purple">Вход</a>
-                <a href="/register" class="btn btn-purple">Регистрация</a>
-            </div>
-            <div class="text d-lg-none py-2">
-                <a href="/login" class="btn btn-purple">Вход</a>
-                <a href="/register" class="btn btn-purple">Регистрация</a>
-            </div>
-        {% else %}
-            <div class="text-end d-none d-lg-block py-2">
-                <a href="/logout" class="btn btn-red btn">Выйти</a>
-            </div>
-            <div class="text d-lg-none py-2">
-                <a href="/logout" class="btn btn-red btn">Выйти</a>
-            </div>
-        {% endif %}
+
+        <div class="text-end py-2">
+           <span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon" >
+            <!-- <img src="/static/media/logo.png" width="37" height="50" class="bi me-2"> -->
+            <a class="navbar-brand d-flex align-items-center brand-logo" href="/">
+                <!-- <img src="logo.svg" alt="Logo" class="brand-logo me-2"> -->
+                <span class="h4 mb-0" style="color: var(--purple-primary);">Yeti</span>
+            </a>
+        </span>
+        </div>
+
 
     </div>
 </nav>
@@ -121,9 +102,10 @@
 
     <br>
 
+    <div class="p-2">
     {% block main_content %}
     {% endblock %}
-
+    </div>
     <footer class="text-center py-4">
         <div class="container">
             <div class="row row-cols-1">
@@ -143,3 +125,5 @@
 
 </body>
 </html>
+
+

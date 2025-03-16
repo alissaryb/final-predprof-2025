@@ -40,9 +40,9 @@
 
 .btn-purple {
     background: var(--purple-primary);
-    color: #000000;
+    color: #ffffff;
 }
 .btn-purple:hover {
     background: var(--purple-active);
-    color: #000000;
+    color: #ffffff;
 }
