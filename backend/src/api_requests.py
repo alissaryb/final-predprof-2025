@@ -1,6 +1,7 @@
 import requests
 import json
 
+
 def get_url():
     with open("url_addr.json", "rt", encoding="utf-8") as f:
         return json.load(f)['url']
@@ -27,9 +28,7 @@ def get_coords() -> dict:
         if resp.status_code == 200:
             data = resp.json()['message']
             res = dict()
-            res['listener'] = data['listener']
-            res['sender'] = data['sender']
-            res['price'] = data['price']
+            res['listener'] = (int(data['listener'][0]), int(data['listener'][1]))
+            res['sender'] = (int(data['sender'][0]), int(data['sender'][1]))
+            res['price'] = {'cuper': float(data['price'][0]), 'engel': float(data['price'][1])}
             return data
-
-
