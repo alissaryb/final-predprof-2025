@@ -6,12 +6,24 @@ from werkzeug.utils import redirect
 
 from backend.database import db_session
 from backend.routers import graphics, users
+from backend.services.database_requests import get_stations
 
 from backend.forms.service_addresses import ServiceAddress
 from backend.routers.users import index
 
 
 app = Flask(__name__)
+
+
+def count_price(stations_list):
+    d = {}
+    prices = get_stations()['price']
+    for i in stations_list:
+        if d[i[2]] not in d:
+            d[i[2]] = 1
+        else:
+            d[i[2]] += 1
+    return d[0] * prices[0], d[1] * prices[1]
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -25,7 +37,8 @@ def index():
             abort(400)
         with open("backend/src/url_addr.txt") as f:
             f.write(url)
-        return render_template("index.html")
+
+
 
     return render_template("index.html")
 
