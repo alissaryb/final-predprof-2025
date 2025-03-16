@@ -4,5 +4,5 @@ from wtforms.validators import InputRequired
 
 
 class ServiceAddress(FlaskForm):
-    url = StringField('URL', validators=[InputRequired('Обязательное поле')])
+    url = StringField('Введите ссылку на API', validators=[InputRequired('Обязательное поле')])
     submit = SubmitField('Отправить')
