@@ -8,7 +8,6 @@ from backend.routers import graphics, users
 from backend.services.database_requests import get_stations, get_map, get_custom_map, fill_database
 
 from backend.forms.service_addresses import ServiceAddress
-from backend.services.database_requests import fill_database
 
 
 app = Flask(__name__)
