@@ -115,7 +115,7 @@ def delete_stations(map_id=0) -> None:
     session.close()
 
 
-def update_stations_types(stations_types: dict[str, tuple[int, int]], delete=True, map_id=0) -> None:
+def update_stations_types(stations_types: dict[str, tuple[float, int]], delete=True, map_id=0) -> None:
     """
     Удаляет старые типы станций (опционально) и создает новые в базе данных
     :param stations_types: словарь (ключ - type) из кортежей (cost, radius), type = ``['cuper', 'egnel', ...]`` с информацией о станциях
@@ -184,7 +184,7 @@ def get_modules(map_id=0) -> dict[str, tuple[int, int]]:
     return res
 
 
-def get_stations(map_id=0) -> dict[str, tuple[int, int, str, int, int]]:
+def get_stations(map_id=0) -> list[tuple[int, int, str, float, int]]:
     """
     Возвращает массив из кортежей (x, y, type, cost, radius), type = ``['cuper', 'egnel', ...]`` с информацией о станциях
     :param map_id: В базе данных может храниться несколько карт и их настройки. По умолчанию программа работает с картой типа 0.
@@ -201,7 +201,7 @@ def get_stations(map_id=0) -> dict[str, tuple[int, int, str, int, int]]:
     return res
 
 
-def get_stations_types(map_id=0) -> dict[str, tuple[int, int]]:
+def get_stations_types(map_id=0) -> dict[str, tuple[float, int]]:
     """
     Возвращает словарь (ключ - type) из кортежей (cost, radius), type = ``['cuper', 'egnel', ...]`` с информацией о типах станций
     :param stations_types: словарь (ключ - type) из кортежей (cost, radius), type = ``['cuper', 'egnel', ...]`` с информацией о станциях
@@ -218,3 +218,32 @@ def get_stations_types(map_id=0) -> dict[str, tuple[int, int]]:
     session.close()
 
     return res
+
+
+def get_custom_map(modules=False, stations=False, map_id=0) -> list[list[tuple[int, int]]]:
+    res = get_map(map_id=map_id)
+    matrix = [[(0, 0)] * 16] * 16
+    for i in range(len(matrix)):
+        for j in range(len(matrix[i])):
+            matrix[i][j] = (0, res[i][j])
+
+    if not modules and not stations:
+        return matrix
+
+    if modules:
+        modules_data = get_modules(map_id=map_id)
+        for key, value in modules_data.items():
+            matrix[value[0]][value[1]] = (1, 0)
+
+    if stations:
+        stations_data = get_stations(map_id=map_id)
+        for i in range(len(matrix)):
+            for j in range(len(matrix[i])):
+                if matrix[i][j][0] == 0:
+                    for station in stations_data:
+                        dist = ((station[0] - i) ** 2 + (station[1] - j) ** 2) ** 0.5
+                        if dist <= station[4]:
+                            matrix[i][j] = (station[4], dist)
+
+
+    return matrix
