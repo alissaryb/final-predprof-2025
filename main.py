@@ -23,7 +23,7 @@ def count_price():
             d[i[2]] = 1
         else:
             d[i[2]] += 1
-    return [(d[0], prices[0]), (d[1], prices[1])]
+    return (d[0], prices[0], d[1], prices[1])
 
 
 @app.route('/', methods=['GET', 'POST'])
