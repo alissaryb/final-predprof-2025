@@ -1,5 +1,6 @@
 import os
 import requests
+import json
 from dotenv import load_dotenv
 from flask import Flask, render_template, abort
 from backend.database import db_session
@@ -32,8 +33,9 @@ def index():
             req = requests.get(url)
         except Exception:
             abort(400)
-        with open("backend/src/url_addr.txt") as f:
-            f.write(url)
+        with open('backend/src/url_addr.json', 'w') as f:
+            json.dump({"url": url}, f)
+
         return render_template("index.html", form=form)
     return render_template("index.html", form=form)
 
