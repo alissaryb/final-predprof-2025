@@ -88,7 +88,8 @@ def get_mat(tile):
     return mat
 
 
-def get_field(tiles):
+def get_field():
+    tiles = get_tiles_from_files()
     field = [[0] * A for i in range(A)]
     mat = get_mat(tiles)
     for ti in range(cnt2):
