@@ -3,6 +3,6 @@ from wtforms import StringField, SubmitField
 from wtforms.validators import InputRequired
 
 
-class FormAddGroups(FlaskForm):
+class ServiceAddress(FlaskForm):
     url = StringField('URL', validators=[InputRequired('Обязательное поле')])
     submit = SubmitField('Отправить')
