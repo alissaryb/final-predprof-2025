@@ -1,3 +1,5 @@
+import json
+
 cnt2 = 4
 cnt = 16
 sz = 64
@@ -95,3 +97,10 @@ def get_field(tiles):
                 for j in range(sz):
                     field[ti * sz + i][tj * sz + j] = tiles[mat[ti][tj]][i][j]
     return field
+
+# data = []
+# for i in range(16):
+#     with open(f"tyles_files/{i + 1}.json", "r") as f:
+#         relief = json.load(f)
+#         data.append(relief)
+# l = get_field(data)
