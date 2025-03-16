@@ -1,10 +1,13 @@
 import requests
 import json
 
-url = "https://olimp.miet.ru/ppo_it/api"
+def get_url():
+    with open("url_addr.json", "rt", encoding="utf-8") as f:
+        return json.load(f)['url']
 
 
 def get_all_tiles():
+    url = get_url()
     tyles = list()
     while len(tyles) != 16:
         resp = requests.get(url)
@@ -18,6 +21,7 @@ def get_all_tiles():
 
 
 def get_coords() -> dict:
+    url = get_url()
     while True:
         resp = requests.get(url + "/coords")
         if resp.status_code == 200:
