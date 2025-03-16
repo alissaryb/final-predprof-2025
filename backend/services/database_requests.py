@@ -243,7 +243,7 @@ def get_custom_map(modules=False, stations=False, map_id=0) -> list[list[tuple[i
                     for station in stations_data:
                         dist = ((station[0] - i) ** 2 + (station[1] - j) ** 2) ** 0.5
                         if dist <= station[4]:
-                            matrix[i][j] = (station[4], dist)
-
+                            matrix[i][j] = (3, station[4])
+                            break
 
     return matrix
