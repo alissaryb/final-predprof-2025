@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from flask import Flask, render_template, abort
 from backend.database import db_session
 from backend.routers import graphics, users
-from backend.services.database_requests import get_stations, get_map, get_custom_map
+from backend.services.database_requests import get_stations, get_map, get_custom_map, fill_database
 
 from backend.forms.service_addresses import ServiceAddress
 from backend.services.database_requests import fill_database
@@ -33,44 +33,60 @@ def index():
     form = ServiceAddress()
     if form.validate_on_submit():
         url = form.url.data
-        print(url)
         try:
             req = requests.get(url)
         except Exception:
             abort(400)
         with open('backend/src/url_addr.json', 'w') as f:
             json.dump({"url": url}, f)
+        with open('map_id.json', 'r') as f:
+            map_id = json.load(f)['map_id']
+        with open('map_id.json', 'w') as f:
+            json.dump({"map_id": map_id + 1}, f)
+        fill_database(map_id + 1)
         return render_template("index.html", form=form)
     return render_template("index.html", form=form)
 
 
 @app.route('/map', methods=['GET', 'POST'])
 def map():
-    map = get_map()
+    with open('map_id.json', 'r') as f:
+        map_id = json.load(f)['map_id']
+    map = get_map(map_id)
     return render_template("map.html", map=map, len=len(map), p=count_price())
+
 
 @app.route('/full', methods=['GET', 'POST'])
 def full():
-    map = get_custom_map(modules=True, stations=True, coverage=True)
+    with open('map_id.json', 'r') as f:
+        map_id = json.load(f)['map_id']
+    map = get_custom_map(modules=True, stations=True, coverage=True, map_id=map_id)
     return render_template("full.html", map=map, len=len(map), p=count_price())
+
 
 @app.route('/station', methods=['GET', 'POST'])
 def station():
-    map = get_custom_map(modules=False, stations=True, coverage=False)
+    with open('map_id.json', 'r') as f:
+        map_id = json.load(f)['map_id']
+    map = get_custom_map(modules=False, stations=True, coverage=False, map_id=map_id)
     return render_template("station.html", map=map, len=len(map), p=count_price())
+
 
 @app.route('/coverage', methods=['GET', 'POST'])
 def coverage():
-    map = get_custom_map(modules=False, stations=True, coverage=True)
+    with open('map_id.json', 'r') as f:
+        map_id = json.load(f)['map_id']
+    map = get_custom_map(modules=False, stations=True, coverage=True, map_id=map_id)
     return render_template("coverage.html", map=map, len=len(map), p=count_price())
+
 
 @app.route('/module', methods=['GET', 'POST'])
 def module():
-    map = get_custom_map(modules=True, stations=False, coverage=False)
+    with open('map_id.json', 'r') as f:
+        map_id = json.load(f)['map_id']
+    map = get_custom_map(modules=True, stations=False, coverage=False, map_id=map_id)
     return render_template("module.html", map=map, len=len(map), p=count_price())
 
-
-# print(get_field())
 
 if __name__ == "__main__":
     db_session.init()

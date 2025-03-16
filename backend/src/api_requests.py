@@ -8,6 +8,7 @@ def get_url():
 
 
 def get_all_tiles():
+    print('Получение тайлов...')
     url = get_url()
     tyles = list()
     while len(tyles) != 16:
@@ -16,7 +17,7 @@ def get_all_tiles():
             relief = resp.json()['message']['data']
             if relief not in tyles:
                 tyles.append(relief)
-        print(resp.status_code)
+    print("Тайлы получены")
     return tyles
 
 

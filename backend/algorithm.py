@@ -7,6 +7,7 @@ cnt = 50
 
 
 def calc_pos(field, from_i, from_j, to_i, to_j, r1, c1, r2, c2):
+    print("Расстановка вышек...")
     g = [[[[] for _ in range(2)] for j in range(size)] for i in range(size)]
     for i in range(size):
         for j in range(size):
@@ -56,4 +57,5 @@ def calc_pos(field, from_i, from_j, to_i, to_j, r1, c1, r2, c2):
             ans = cand
             respath = path
     respath.reverse()
+    print("Вышки расставлены.", respath)
     return respath
