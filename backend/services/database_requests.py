@@ -4,6 +4,9 @@ from backend.database.models.stations_types import StationType
 from backend.database.models.stations import Station
 from backend.database.db_session import create_session
 
+from backend.tiles import get_field
+from backend.src.api_requests import get_coords
+
 import requests
 
 
@@ -256,5 +259,13 @@ def get_custom_map(modules=False, stations=False, coverage=False, map_id=0) -> l
     return matrix
 
 
-def fill_database(matrix: list[list[int]], map_id=0) -> None:
-    pass
+def fill_database(map_id=0) -> None:
+    full_matrix = get_field()
+    data = get_coords()
+
+    update_map(full_matrix, map_id=map_id)
+    stations_types = {'cuper': (data['price']['cuper'], 32), 'engel': (data['price']['engel'], 64)}
+    update_stations_types(stations_types, map_id=map_id)
+    update_modules((*data['listener'], 'listener'),
+                   (*data['sender'], 'sender'), map_id=map_id)
+    # update_stations()
