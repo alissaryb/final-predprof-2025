@@ -3,7 +3,7 @@ import json
 
 
 def get_url():
-    with open("url_addr.json", "rt", encoding="utf-8") as f:
+    with open("./backend/src/url_addr.json", "rt", encoding="utf-8") as f:
         return json.load(f)['url']
 
 
@@ -19,6 +19,7 @@ def get_all_tiles():
 
                 with open(f"../tyles_files/{len(tyles)}.json", "w") as f:
                     json.dump(relief, f)
+    return tyles
 
 
 def get_coords() -> dict:
