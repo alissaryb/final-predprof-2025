@@ -40,7 +40,6 @@ def index():
             abort(400)
         with open('backend/src/url_addr.json', 'w') as f:
             json.dump({"url": url}, f)
-        get_all_tiles()
         return render_template("index.html", form=form)
     return render_template("index.html", form=form)
 
