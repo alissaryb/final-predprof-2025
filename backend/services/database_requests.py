@@ -6,8 +6,7 @@ from backend.database.db_session import create_session
 
 from backend.tiles import get_field
 from backend.src.api_requests import get_coords
-
-import requests
+from backend.algorithm import calc_pos
 
 
 def update_map(matrix: list[list[int]], delete=True, map_id=0) -> None:
@@ -264,8 +263,19 @@ def fill_database(map_id=0) -> None:
     data = get_coords()
 
     update_map(full_matrix, map_id=map_id)
+
     stations_types = {'cuper': (data['price']['cuper'], 32), 'engel': (data['price']['engel'], 64)}
     update_stations_types(stations_types, map_id=map_id)
+
     update_modules((*data['listener'], 'listener'),
                    (*data['sender'], 'sender'), map_id=map_id)
-    # update_stations()
+
+    stations = calc_pos(full_matrix, data['sender'][0], data['sender'][1], data['listener'][0], data['listener'][1],
+                        32, data['price']['cuper'], 64, data['price']['engel'])
+    res = []
+    for station in stations:
+        if station[2] == 0:
+            res.append((station[0], station[1], 'cuper'))
+        else:
+            res.append((station[0], station[1], 'engel'))
+    update_stations(res, map_id=map_id)
