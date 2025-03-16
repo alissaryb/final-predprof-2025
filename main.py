@@ -2,17 +2,14 @@ import os
 import requests
 from dotenv import load_dotenv
 from flask import Flask, render_template, abort
-from werkzeug.utils import redirect
-
 from backend.database import db_session
 from backend.routers import graphics, users
 from backend.services.database_requests import get_stations
 
 from backend.forms.service_addresses import ServiceAddress
-from backend.routers.users import index
-
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = "Otcheburashim"
 
 
 def count_price(stations_list):
@@ -37,10 +34,8 @@ def index():
             abort(400)
         with open("backend/src/url_addr.txt") as f:
             f.write(url)
-
-
-
-    return render_template("index.html")
+        return render_template("index.html", form=form)
+    return render_template("index.html", form=form)
 
 
 @app.route('/map', methods=['GET', 'POST'])
