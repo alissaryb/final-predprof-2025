@@ -4,12 +4,15 @@ from backend.database.models.stations_types import StationType
 from backend.database.models.stations import Station
 from backend.database.db_session import create_session
 
+import requests
+
 
 def update_map(matrix: list[list[int]], delete=True, map_id=0) -> None:
     """
     Удаляет старую карту (опционально) и создает новую в базе данных
     :param matrix: двумерный массив, состоящий из высот пикселей
     :param delete: ``True`` по умолчанию
+    :param map_id: В базе данных может храниться несколько карт и их настройки. По умолчанию программа работает с картой типа 0.
     :return:
     """
     session = create_session()
@@ -28,6 +31,7 @@ def update_map(matrix: list[list[int]], delete=True, map_id=0) -> None:
 def delete_map(map_id=0) -> None:
     """
     Удаляет старую карту
+    :param map_id: В базе данных может храниться несколько карт и их настройки. По умолчанию программа работает с картой типа 0.
     :return:
     """
     session = create_session()
@@ -44,6 +48,24 @@ def update_modules(module1: (int, int, str), module2: (int, int, str), map_id=0)
     Удаляет старые модули и создает новые в базе данных
     :param module1: кортеж (x, y, type), type = ``['sender', 'listener']``
     :param module2: кортеж (x, y, type), type = ``['sender', 'listener']``
+    :param map_id: В базе данных может храниться несколько карт и их настройки. По умолчанию программа работает с картой типа 0.
+    :return:
+    """
+    session = create_session()
+
+    delete_modules(map_id=map_id)
+
+    for module in [module1, module2]:
+        new_module = Module(x=module[0], y=module[1], type=module[2], map_id=map_id)
+        session.add(new_module)
+    session.commit()
+    session.close()
+
+
+def delete_modules(map_id=0) -> None:
+    """
+    Удаляет старые модули
+    :param map_id: В базе данных может храниться несколько карт и их настройки. По умолчанию программа работает с картой типа 0.
     :return:
     """
     session = create_session()
@@ -51,11 +73,6 @@ def update_modules(module1: (int, int, str), module2: (int, int, str), map_id=0)
     modules = session.query(Module).where(Module.map_id == map_id).all()
     for i in modules:
         session.delete(i)
-    session.commit()
-
-    for module in [module1, module2]:
-        new_module = Module(x=module[0], y=module[1], type=module[2], map_id=map_id)
-        session.add(new_module)
     session.commit()
     session.close()
 
@@ -65,6 +82,7 @@ def update_stations(stations: list[tuple[int, int, str]], delete=True, map_id=0)
     Удаляет старые станции (опционально) и создает новые в базе данных
     :param stations: массив из кортежей (x, y, type), type = ``['cuper', 'engel']``
     :param delete: ``True`` по умолчанию
+    :param map_id: В базе данных может храниться несколько карт и их настройки. По умолчанию программа работает с картой типа 0.
     :return:
     """
     session = create_session()
@@ -87,6 +105,7 @@ def update_stations(stations: list[tuple[int, int, str]], delete=True, map_id=0)
 def delete_stations(map_id=0) -> None:
     """
     Удаляет старые станции
+    :param map_id: В базе данных может храниться несколько карт и их настройки. По умолчанию программа работает с картой типа 0.
     :return:
     """
     session = create_session()
@@ -98,11 +117,12 @@ def delete_stations(map_id=0) -> None:
     session.close()
 
 
-def update_stations_types(stations_types: dict[str, tuple[int, int]], delete=True, map_id=0) -> None:
+def update_stations_types(stations_types: dict[str, tuple[float, int]], delete=True, map_id=0) -> None:
     """
     Удаляет старые типы станций (опционально) и создает новые в базе данных
     :param stations_types: словарь (ключ - type) из кортежей (cost, radius), type = ``['cuper', 'egnel', ...]`` с информацией о станциях
     :param delete: ``True`` по умолчанию
+    :param map_id: В базе данных может храниться несколько карт и их настройки. По умолчанию программа работает с картой типа 0.
     :return:
     """
     session = create_session()
@@ -120,6 +140,7 @@ def update_stations_types(stations_types: dict[str, tuple[int, int]], delete=Tru
 def delete_stations_types(map_id=0) -> None:
     """
     Удаляет старые типы станций
+    :param map_id: В базе данных может храниться несколько карт и их настройки. По умолчанию программа работает с картой типа 0.
     :return:
     """
     session = create_session()
@@ -134,9 +155,10 @@ def delete_stations_types(map_id=0) -> None:
 def get_map(map_id=0) -> list[list[int]]:
     """
     Возвращает карту с высотами
+    :param map_id: В базе данных может храниться несколько карт и их настройки. По умолчанию программа работает с картой типа 0.
     :return:
     """
-    matrix = [[0] * 16] * 16
+    matrix = [[0] * 256] * 256
 
     session = create_session()
     map = session.query(Map).where(Map.map_id == map_id).all()
@@ -150,6 +172,7 @@ def get_map(map_id=0) -> list[list[int]]:
 def get_modules(map_id=0) -> dict[str, tuple[int, int]]:
     """
     Возвращает словарь (ключ - type) из кортежей (x, y), type = ``['sender', 'listener']`` с информацией о модулях
+    :param map_id: В базе данных может храниться несколько карт и их настройки. По умолчанию программа работает с картой типа 0.
     :return:
     """
     res = {}
@@ -163,9 +186,10 @@ def get_modules(map_id=0) -> dict[str, tuple[int, int]]:
     return res
 
 
-def get_stations(map_id=0) -> dict[str, tuple[int, int, str, int, int]]:
+def get_stations(map_id=0) -> list[tuple[int, int, str, float, int]]:
     """
     Возвращает массив из кортежей (x, y, type, cost, radius), type = ``['cuper', 'egnel', ...]`` с информацией о станциях
+    :param map_id: В базе данных может храниться несколько карт и их настройки. По умолчанию программа работает с картой типа 0.
     :return:
     """
     res = []
@@ -179,11 +203,12 @@ def get_stations(map_id=0) -> dict[str, tuple[int, int, str, int, int]]:
     return res
 
 
-def get_stations_types(map_id=0) -> dict[str, tuple[int, int]]:
+def get_stations_types(map_id=0) -> dict[str, tuple[float, int]]:
     """
     Возвращает словарь (ключ - type) из кортежей (cost, radius), type = ``['cuper', 'egnel', ...]`` с информацией о типах станций
     :param stations_types: словарь (ключ - type) из кортежей (cost, radius), type = ``['cuper', 'egnel', ...]`` с информацией о станциях
     :param delete: ``True`` по умолчанию
+    :param map_id: В базе данных может храниться несколько карт и их настройки. По умолчанию программа работает с картой типа 0.
     :return:
     """
     res = {}
@@ -195,3 +220,41 @@ def get_stations_types(map_id=0) -> dict[str, tuple[int, int]]:
     session.close()
 
     return res
+
+
+def get_custom_map(modules=False, stations=False, coverage=False, map_id=0) -> list[list[tuple[int, int]]]:
+    res = get_map(map_id=map_id)
+    matrix = [[(0, 0)] * 256] * 256
+    for i in range(len(matrix)):
+        for j in range(len(matrix[i])):
+            matrix[i][j] = (0, res[i][j])
+
+    if not modules and not stations:
+        return matrix
+
+    if modules:
+        modules_data = get_modules(map_id=map_id)
+        for key, value in modules_data.items():
+            matrix[value[0]][value[1]] = (1, 0)
+
+    if stations:
+        stations_data = get_stations(map_id=map_id)
+        for station in stations_data:
+            matrix[station[0]][station[1]] = (2, station[4])
+
+    if coverage:
+        stations_data = get_stations(map_id=map_id)
+        for i in range(len(matrix)):
+            for j in range(len(matrix[i])):
+                if matrix[i][j][0] == 0:
+                    for station in stations_data:
+                        dist = ((station[0] - i) ** 2 + (station[1] - j) ** 2) ** 0.5
+                        if dist <= station[4]:
+                            matrix[i][j] = (3, station[4])
+                            break
+
+    return matrix
+
+
+def fill_database(matrix: list[list[int]], map_id=0) -> None:
+    pass

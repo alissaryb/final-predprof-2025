@@ -5,7 +5,7 @@ from backend.database.db_session import SqlAlchemyBase
 class Map(SqlAlchemyBase):
     __tablename__ = 'map'
 
-    id = sqlalchemy.Column(sqlalchemy.Integer, autoincrement=True)
+    id = sqlalchemy.Column(sqlalchemy.Integer, primary_key=True, autoincrement=True)
     x = sqlalchemy.Column(sqlalchemy.Integer, autoincrement=True)
     y = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
     value = sqlalchemy.Column(sqlalchemy.Integer, nullable=False)
