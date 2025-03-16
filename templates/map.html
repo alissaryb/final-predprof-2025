@@ -1,21 +1,30 @@
 {% extends "base.html" %}
 {% block main_content %}
 
- <style>
-        table {
-            border-collapse: collapse;
-        }
+    <style>
+
         td {
             width: 3px;
             height: 3px;
-            border: 0.5px solid #000;
-            cursor: pointer;
+            /*border: 0.5px solid #ff0000;*/
+            /*cursor: pointer;*/
             background-color: white;
+            color: #ffffff;
+            font-size: 2px;
         }
-        .active {
-            background-color: green;
-        }
- </style>
+    </style>
 
+
+    <table style="width: 192px">
+        {% for i in range(len) %}
+            <tr>
+            {% for j in range(len) %}
+                <td id="{{i * 64 + j}}" style="background-color: rgb({{255 - map[i][j]}}, 0, 0)"> {{ map[i][j] }}</td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+
+<td id="{{348}}" style="color: var(--yellow-primary)"></td>
 {% endblock %}
 
