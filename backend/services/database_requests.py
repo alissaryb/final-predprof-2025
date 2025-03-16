@@ -122,7 +122,7 @@ def delete_stations(map_id=0) -> None:
 def update_stations_types(stations_types: dict[str, tuple[float, int]], delete=True, map_id=0) -> None:
     """
     Удаляет старые типы станций (опционально) и создает новые в базе данных
-    :param stations_types: словарь (ключ - type) из кортежей (cost, radius), type = ``['cuper', 'egnel', ...]`` с информацией о станциях
+    :param stations_types: словарь (ключ - type) из кортежей (cost, radius), type = ``['cuper', 'engel', ...]`` с информацией о станциях
     :param delete: ``True`` по умолчанию
     :param map_id: В базе данных может храниться несколько карт и их настройки. По умолчанию программа работает с картой типа 0.
     :return:
@@ -190,7 +190,7 @@ def get_modules(map_id=0) -> dict[str, tuple[int, int]]:
 
 def get_stations(map_id=0) -> list[tuple[int, int, str, float, int]]:
     """
-    Возвращает массив из кортежей (x, y, type, cost, radius), type = ``['cuper', 'egnel', ...]`` с информацией о станциях
+    Возвращает массив из кортежей (x, y, type, cost, radius), type = ``['cuper', 'engel', ...]`` с информацией о станциях
     :param map_id: В базе данных может храниться несколько карт и их настройки. По умолчанию программа работает с картой типа 0.
     :return:
     """
@@ -207,8 +207,8 @@ def get_stations(map_id=0) -> list[tuple[int, int, str, float, int]]:
 
 def get_stations_types(map_id=0) -> dict[str, tuple[float, int]]:
     """
-    Возвращает словарь (ключ - type) из кортежей (cost, radius), type = ``['cuper', 'egnel', ...]`` с информацией о типах станций
-    :param stations_types: словарь (ключ - type) из кортежей (cost, radius), type = ``['cuper', 'egnel', ...]`` с информацией о станциях
+    Возвращает словарь (ключ - type) из кортежей (cost, radius), type = ``['cuper', 'engel', ...]`` с информацией о типах станций
+    :param stations_types: словарь (ключ - type) из кортежей (cost, radius), type = ``['cuper', 'engel', ...]`` с информацией о станциях
     :param delete: ``True`` по умолчанию
     :param map_id: В базе данных может храниться несколько карт и их настройки. По умолчанию программа работает с картой типа 0.
     :return:
