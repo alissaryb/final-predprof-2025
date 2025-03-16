@@ -36,6 +36,7 @@ def index():
         with open('backend/src/url_addr.json', 'w') as f:
             json.dump({"url": url}, f)
 
+
         return render_template("index.html", form=form)
     return render_template("index.html", form=form)
 
