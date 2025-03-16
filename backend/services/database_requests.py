@@ -4,6 +4,8 @@ from backend.database.models.stations_types import StationType
 from backend.database.models.stations import Station
 from backend.database.db_session import create_session
 
+import requests
+
 
 def update_map(matrix: list[list[int]], delete=True, map_id=0) -> None:
     """
@@ -252,3 +254,7 @@ def get_custom_map(modules=False, stations=False, coverage=False, map_id=0) -> l
                             break
 
     return matrix
+
+
+def fill_database(matrix: list[list[int]], map_id=0) -> None:
+    pass
