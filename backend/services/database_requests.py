@@ -237,6 +237,9 @@ def get_custom_map(modules=False, stations=False, map_id=0) -> list[list[tuple[i
 
     if stations:
         stations_data = get_stations(map_id=map_id)
+        for station in stations_data:
+            matrix[station[0]][station[1]] = (2, station[4])
+
         for i in range(len(matrix)):
             for j in range(len(matrix[i])):
                 if matrix[i][j][0] == 0:
