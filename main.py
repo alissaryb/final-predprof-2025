@@ -8,8 +8,8 @@ from backend.routers import graphics, users
 from backend.services.database_requests import get_stations, get_map, get_custom_map
 
 from backend.forms.service_addresses import ServiceAddress
-from backend.src.api_requests import get_all_tiles
-from backend.tiles import get_field
+from backend.services.database_requests import fill_database
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "Otcheburashim"
@@ -74,6 +74,10 @@ def module():
 
 if __name__ == "__main__":
     db_session.init()
+
+    if not os.path.exists('backend/database/predprof.db'):
+        fill_database()
+
     app.register_blueprint(graphics.blueprint)
     app.register_blueprint(users.blueprint)
 
