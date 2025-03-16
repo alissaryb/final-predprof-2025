@@ -8,6 +8,8 @@ from backend.routers import graphics, users
 from backend.services.database_requests import get_stations, get_map, get_custom_map
 
 from backend.forms.service_addresses import ServiceAddress
+from backend.src.api_requests import get_all_tiles
+from backend.tiles import get_field
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "Otcheburashim"
@@ -28,15 +30,15 @@ def count_price():
 def index():
     form = ServiceAddress()
     if form.validate_on_submit():
-        url = form.url
+        url = form.url.data
+        print(url)
         try:
             req = requests.get(url)
         except Exception:
             abort(400)
         with open('backend/src/url_addr.json', 'w') as f:
             json.dump({"url": url}, f)
-
-
+        get_all_tiles()
         return render_template("index.html", form=form)
     return render_template("index.html", form=form)
 
@@ -67,6 +69,7 @@ def module():
     return render_template("module.html", map=map, len=len(map), p=count_price())
 
 
+# print(get_field())
 
 if __name__ == "__main__":
     db_session.init()

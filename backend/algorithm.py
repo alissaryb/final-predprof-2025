@@ -7,12 +7,9 @@ cnt = 50
 
 
 def calc_pos(field, from_i, from_j, to_i, to_j, r1, c1, r2, c2):
-    print("calcpos")
     g = [[[[] for _ in range(2)] for j in range(size)] for i in range(size)]
-    print("g")
     for i in range(size):
         for j in range(size):
-            print("ij", i, j)
             for k in range(cnt):
                 ei = randint(i - 120, i + 120)
                 ej = randint(j - 120, j + 120)
@@ -27,7 +24,6 @@ def calc_pos(field, from_i, from_j, to_i, to_j, r1, c1, r2, c2):
                     g[i][j][1].append((ei, ej, 0, c1))
                 if dist < r2 + r2:
                     g[i][j][1].append((ei, ej, 1, c2))
-    print("graph built")
     heap = []
     dist = [[[1e18 for _ in range(2)] for j in range(size)] for i in range(size)]
     prev = [[[(-1, -1, -1) for _ in range(2)] for j in range(size)] for i in range(size)]
