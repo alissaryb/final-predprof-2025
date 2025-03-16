@@ -160,7 +160,12 @@ def get_map(map_id=0) -> list[list[int]]:
     :param map_id: В базе данных может храниться несколько карт и их настройки. По умолчанию программа работает с картой типа 0.
     :return:
     """
-    matrix = [[0] * 256] * 256
+    matrix = []
+    for i in range(256):
+        arr = []
+        for j in range(256):
+            arr.append(0)
+        matrix.append(arr)
 
     session = create_session()
     map = session.query(Map).where(Map.map_id == map_id).all()
@@ -226,7 +231,13 @@ def get_stations_types(map_id=0) -> dict[str, tuple[float, int]]:
 
 def get_custom_map(modules=False, stations=False, coverage=False, map_id=0) -> list[list[tuple[int, int]]]:
     res = get_map(map_id=map_id)
-    matrix = [[(0, 0)] * 256] * 256
+    matrix = []
+    for i in range(256):
+        arr = []
+        for j in range(256):
+            arr.append(0)
+        matrix.append(arr)
+
     for i in range(len(matrix)):
         for j in range(len(matrix[i])):
             matrix[i][j] = (0, res[i][j])
