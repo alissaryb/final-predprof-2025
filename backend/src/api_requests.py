@@ -16,9 +16,6 @@ def get_all_tiles():
             relief = resp.json()['message']['data']
             if relief not in tyles:
                 tyles.append(relief)
-
-                with open(f"../tyles_files/{len(tyles)}.json", "w") as f:
-                    json.dump(relief, f)
     return tyles
 
 
