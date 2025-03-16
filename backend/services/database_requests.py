@@ -6,8 +6,7 @@ from backend.database.db_session import create_session
 
 from backend.tiles import get_field
 from backend.src.api_requests import get_coords
-
-import requests
+from backend.algorithm import calc_pos
 
 
 def update_map(matrix: list[list[int]], delete=True, map_id=0) -> None:
@@ -123,7 +122,7 @@ def delete_stations(map_id=0) -> None:
 def update_stations_types(stations_types: dict[str, tuple[float, int]], delete=True, map_id=0) -> None:
     """
     Удаляет старые типы станций (опционально) и создает новые в базе данных
-    :param stations_types: словарь (ключ - type) из кортежей (cost, radius), type = ``['cuper', 'egnel', ...]`` с информацией о станциях
+    :param stations_types: словарь (ключ - type) из кортежей (cost, radius), type = ``['cuper', 'engel', ...]`` с информацией о станциях
     :param delete: ``True`` по умолчанию
     :param map_id: В базе данных может храниться несколько карт и их настройки. По умолчанию программа работает с картой типа 0.
     :return:
@@ -191,7 +190,7 @@ def get_modules(map_id=0) -> dict[str, tuple[int, int]]:
 
 def get_stations(map_id=0) -> list[tuple[int, int, str, float, int]]:
     """
-    Возвращает массив из кортежей (x, y, type, cost, radius), type = ``['cuper', 'egnel', ...]`` с информацией о станциях
+    Возвращает массив из кортежей (x, y, type, cost, radius), type = ``['cuper', 'engel', ...]`` с информацией о станциях
     :param map_id: В базе данных может храниться несколько карт и их настройки. По умолчанию программа работает с картой типа 0.
     :return:
     """
@@ -208,8 +207,8 @@ def get_stations(map_id=0) -> list[tuple[int, int, str, float, int]]:
 
 def get_stations_types(map_id=0) -> dict[str, tuple[float, int]]:
     """
-    Возвращает словарь (ключ - type) из кортежей (cost, radius), type = ``['cuper', 'egnel', ...]`` с информацией о типах станций
-    :param stations_types: словарь (ключ - type) из кортежей (cost, radius), type = ``['cuper', 'egnel', ...]`` с информацией о станциях
+    Возвращает словарь (ключ - type) из кортежей (cost, radius), type = ``['cuper', 'engel', ...]`` с информацией о типах станций
+    :param stations_types: словарь (ключ - type) из кортежей (cost, radius), type = ``['cuper', 'engel', ...]`` с информацией о станциях
     :param delete: ``True`` по умолчанию
     :param map_id: В базе данных может храниться несколько карт и их настройки. По умолчанию программа работает с картой типа 0.
     :return:
@@ -264,8 +263,19 @@ def fill_database(map_id=0) -> None:
     data = get_coords()
 
     update_map(full_matrix, map_id=map_id)
+
     stations_types = {'cuper': (data['price']['cuper'], 32), 'engel': (data['price']['engel'], 64)}
     update_stations_types(stations_types, map_id=map_id)
+
     update_modules((*data['listener'], 'listener'),
                    (*data['sender'], 'sender'), map_id=map_id)
-    # update_stations()
+
+    stations = calc_pos(full_matrix, data['sender'][0], data['sender'][1], data['listener'][0], data['listener'][1],
+                        32, data['price']['cuper'], 64, data['price']['engel'])
+    res = []
+    for station in stations:
+        if station[2] == 0:
+            res.append((station[0], station[1], 'cuper'))
+        else:
+            res.append((station[0], station[1], 'engel'))
+    update_stations(res, map_id=map_id)
