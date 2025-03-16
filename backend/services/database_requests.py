@@ -220,7 +220,7 @@ def get_stations_types(map_id=0) -> dict[str, tuple[float, int]]:
     return res
 
 
-def get_custom_map(modules=False, stations=False, map_id=0) -> list[list[tuple[int, int]]]:
+def get_custom_map(modules=False, stations=False, coverage=False, map_id=0) -> list[list[tuple[int, int]]]:
     res = get_map(map_id=map_id)
     matrix = [[(0, 0)] * 16] * 16
     for i in range(len(matrix)):
@@ -240,6 +240,8 @@ def get_custom_map(modules=False, stations=False, map_id=0) -> list[list[tuple[i
         for station in stations_data:
             matrix[station[0]][station[1]] = (2, station[4])
 
+    if coverage:
+        stations_data = get_stations(map_id=map_id)
         for i in range(len(matrix)):
             for j in range(len(matrix[i])):
                 if matrix[i][j][0] == 0:
