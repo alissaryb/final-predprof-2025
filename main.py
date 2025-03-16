@@ -21,7 +21,7 @@ def count_price():
             d[i[2]] = i[3]
         else:
             d[i[2]] += i[3]
-    return d[0], d[1], d[0] + d[1]
+    return (d[0], d[1], d[0] + d[1])
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -44,28 +44,31 @@ def index():
 @app.route('/map', methods=['GET', 'POST'])
 def map():
     map = get_map()
-    return render_template("map.html", map=map, len=len(map), p=count_price())
+    return render_template("map.html", map=map, len=len(map))
+
 
 @app.route('/full', methods=['GET', 'POST'])
 def full():
     map = get_custom_map(modules=True, stations=True, coverage=True)
-    return render_template("full.html", map=map, len=len(map), p=count_price())
+    return render_template("full.html", map=map, len=len(map), price=count_price())
+
 
 @app.route('/station', methods=['GET', 'POST'])
 def station():
     map = get_custom_map(modules=False, stations=True, coverage=False)
-    return render_template("station.html", map=map, len=len(map), p=count_price())
+    return render_template("station.html", map=map, len=len(map), price=count_price())
+
 
 @app.route('/coverage', methods=['GET', 'POST'])
 def coverage():
     map = get_custom_map(modules=False, stations=True, coverage=True)
-    return render_template("coverage.html", map=map, len=len(map), p=count_price())
+    return render_template("coverage.html", map=map, len=len(map), price=count_price())
+
 
 @app.route('/module', methods=['GET', 'POST'])
 def module():
     map = get_custom_map(modules=True, stations=False, coverage=False)
-    return render_template("module.html", map=map, len=len(map), p=count_price())
-
+    return render_template("module.html", map=map, len=len(map))
 
 
 if __name__ == "__main__":

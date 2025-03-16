@@ -1,7 +1,27 @@
 {% extends "base.html" %}
 {% block main_content %}
 
-    <table style="width: 192px">
+    <div class="tablo">
+        <h4 style="color: var(--text-yellow);">Станции радиуса 32</h4>
+        <p>Количество станций: {{ price[0] }}</p>
+        <p>Цена за 1 штуку:  {{ price[1] }}</p>
+        <p>Общая цена: {{ price[0] * price[1] }}</p>
+    </div>
+    <div class="tablo">
+        <h4 style="color: var(--text-yellow);">Станции радиуса 64</h4>
+        <p>Количество станций: {{ price[2] }}</p>
+        <p>Цена за 1 штуку:  {{ price[3] }}</p>
+        <p>Общая цена: {{ price[2] * price[3] }}</p>
+    </div>
+    <div class="tablo">
+        <h4 style="color: var(--text-yellow);">Все станции</h4>
+        <p>Количество станций: {{ price[0] + price[2] }}}</p>
+        <p>Цена за 1 штуку:  {{ price[1] + price[3] }}</p>
+        <p>Общая цена: {{ price[0] * price[1] + price[2] * price[3]}}</p>
+    </div>
+
+
+    <table>
         {% for i in range(len) %}
             <tr>
             {% for j in range(len) %}
