@@ -8,6 +8,7 @@ def get_url():
 
 
 def get_all_tiles():
+    print('Получение тайлов...')
     url = get_url()
     tyles = list()
     while len(tyles) != 16:
@@ -16,9 +17,7 @@ def get_all_tiles():
             relief = resp.json()['message']['data']
             if relief not in tyles:
                 tyles.append(relief)
-
-                with open(f"../tyles_files/{len(tyles)}.json", "w") as f:
-                    json.dump(relief, f)
+    print("Тайлы получены")
     return tyles
 
 
@@ -32,4 +31,5 @@ def get_coords() -> dict:
             res['listener'] = (int(data['listener'][0]), int(data['listener'][1]))
             res['sender'] = (int(data['sender'][0]), int(data['sender'][1]))
             res['price'] = {'cuper': float(data['price'][0]), 'engel': float(data['price'][1])}
-            return data
+            return res
+        print(resp.status_code)

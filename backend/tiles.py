@@ -91,6 +91,7 @@ def get_mat(tile):
 
 
 def get_field():
+    print("Составление матрицы...")
     tiles = get_all_tiles()
     field = [[0] * A for i in range(A)]
     mat = get_mat(tiles)
@@ -99,6 +100,7 @@ def get_field():
             for i in range(sz):
                 for j in range(sz):
                     field[ti * sz + i][tj * sz + j] = tiles[mat[ti][tj]][i][j]
+    print("Матрица собрана.")
     return field
 
 # def get_tiles_from_files():
