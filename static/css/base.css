@@ -6,17 +6,17 @@
 
 
 td {
-    width: 5px;
-    height: 5px;
+    width: 3px;
+    height: 3px;
     /*border: 0.5px solid #000000;*/
     /*cursor: pointer;*/
     /*background-color: white;*/
     color: #ffffff;
-    font-size: 4px;
+    font-size: 2px;
 }
 
 table {
-    width: 1280px;
+    width: 768px;
     display: block;
     margin-left: auto;
     margin-right:  auto;
