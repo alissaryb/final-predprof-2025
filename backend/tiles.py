@@ -1,7 +1,7 @@
 cnt2 = 4
 cnt = 16
 sz = 64
-
+A = 256
 
 def get_mat(tile):
     mat = [[0] * cnt2 for i in range(cnt2)]
@@ -70,9 +70,9 @@ def get_mat(tile):
                     diff1 += tile[mat[0][0]][sz - 1][k] - tile[i][0][k]
                     diff2 += tile[mat[3][0]][0][k] - tile[i][sz - 1][k]
                 if diff1 < diff2:
-                    mat[1][0] = i
+                    mat[1][3] = i
                 else:
-                    mat[2][0] = i
+                    mat[2][3] = i
             elif left:
                 diff1 = 0
                 diff2 = 0
@@ -80,7 +80,18 @@ def get_mat(tile):
                     diff1 += tile[mat[0][3]][sz - 1][k] - tile[i][0][k]
                     diff2 += tile[mat[3][3]][0][k] - tile[i][sz - 1][k]
                 if diff1 < diff2:
-                    mat[1][3] = i
+                    mat[1][0] = i
                 else:
-                    mat[2][3] = i
+                    mat[2][0] = i
     return mat
+
+
+def get_field(tiles):
+    field = [[0] * A for i in range(A)]
+    mat = get_mat(tiles)
+    for ti in range(cnt2):
+        for tj in range(cnt2):
+            for i in range(sz):
+                for j in range(sz):
+                    field[ti * sz + i][tj * sz + j] = tiles[mat[ti][tj]][i][j]
+    return field
