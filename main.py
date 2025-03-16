@@ -18,12 +18,14 @@ app.config['SECRET_KEY'] = "Otcheburashim"
 def count_price():
     d = {}
     stations_list = get_stations()
+    prices = [0, 0]
     for i in stations_list:
         if d[i[2]] not in d:
-            d[i[2]] = i[3]
+            prices[i[2]] = i[3]
+            d[i[2]] = 1
         else:
-            d[i[2]] += i[3]
-    return d[0], d[1], d[0] + d[1]
+            d[i[2]] += 1
+    return (d[0], prices[0], d[1], prices[1])
 
 
 @app.route('/', methods=['GET', 'POST'])
