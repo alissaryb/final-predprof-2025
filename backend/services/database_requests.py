@@ -262,7 +262,7 @@ def get_custom_map(modules=False, stations=False, coverage=False, map_id=0) -> l
                 if matrix[i][j][0] == 0:
                     for station in stations_data:
                         dist = ((station[0] - i) ** 2 + (station[1] - j) ** 2) ** 0.5
-                        if dist <= station[4]:
+                        if dist <= station[4] and res[i][j] <= res[station[0]][station[1]]:
                             matrix[i][j] = (3, station[4])
                             break
 
