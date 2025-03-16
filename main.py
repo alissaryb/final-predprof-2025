@@ -18,9 +18,9 @@ def count_price():
     stations_list = get_stations()
     for i in stations_list:
         if d[i[2]] not in d:
-            d[i[2]] = i[3]
+            d[i[2]] = 1
         else:
-            d[i[2]] += i[3]
+            d[i[2]] += 1
     return d[0], d[1], d[0] + d[1]
 
 
