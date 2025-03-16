@@ -1,0 +1,4 @@
+.env
+backend/database/predprof.db
+.venv
+.idea
